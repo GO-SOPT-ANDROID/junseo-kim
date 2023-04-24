@@ -1,11 +1,17 @@
 package org.android.go.sopt
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import org.android.go.sopt.databinding.ActivitySignInBinding
 
 class SignInActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivitySignInBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
     }
 }
