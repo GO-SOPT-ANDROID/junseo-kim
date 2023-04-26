@@ -7,9 +7,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import org.android.go.sopt.MainActivity
 import org.android.go.sopt.databinding.ActivitySignInBinding
 import org.android.go.sopt.model.UserInfo
+import org.android.go.sopt.presentation.main.view.MainActivity
 import org.android.go.sopt.presentation.signin.viewmodel.SignInViewModel
 import org.android.go.sopt.presentation.signup.SignUpActivity
 import org.android.go.sopt.util.IntentKey.USER_ID
