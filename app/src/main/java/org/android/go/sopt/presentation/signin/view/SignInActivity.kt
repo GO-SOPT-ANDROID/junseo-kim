@@ -6,15 +6,23 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.databinding.ActivitySignInBinding
+import org.android.go.sopt.model.UserInfo
+import org.android.go.sopt.presentation.signin.viewmodel.SignInViewModel
 import org.android.go.sopt.presentation.signup.SignUpActivity
+import org.android.go.sopt.util.IntentKey.USER_ID
+import org.android.go.sopt.util.IntentKey.USER_NAME
+import org.android.go.sopt.util.IntentKey.USER_PW
+import org.android.go.sopt.util.IntentKey.USER_SKILL
 import org.android.go.sopt.util.makeToastMessage
 
 class SignInActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
     lateinit var signUpResultLauncher: ActivityResultLauncher<Intent>
+    private val viewModel by viewModels<SignInViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +43,24 @@ class SignInActivity : AppCompatActivity() {
         signUpResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-                    makeToastMessage("회원가입 성공")
+                    saveUserInfo(result.data)
                 } else {
-                    makeToastMessage("회원가입 실패")
+                    makeToastMessage("회원가입에 실패하였습니다.")
                 }
             }
+    }
+
+    private fun saveUserInfo(info: Intent?) {
+        info?.run {
+            viewModel.getUserInfo(
+                UserInfo(
+                    userId = getStringExtra(USER_ID),
+                    userPw = getStringExtra(USER_PW),
+                    userName = getStringExtra(USER_NAME),
+                    userSkill = getStringExtra(USER_SKILL)
+                )
+            )
+        }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
