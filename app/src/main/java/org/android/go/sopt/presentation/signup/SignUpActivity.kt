@@ -9,6 +9,7 @@ import org.android.go.sopt.util.IntentKey.USER_ID
 import org.android.go.sopt.util.IntentKey.USER_NAME
 import org.android.go.sopt.util.IntentKey.USER_PW
 import org.android.go.sopt.util.IntentKey.USER_SKILL
+import org.android.go.sopt.util.makeToastMessage
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -33,6 +34,7 @@ class SignUpActivity : AppCompatActivity() {
             putExtra(USER_NAME, binding.etSignUpName.text.toString())
             putExtra(USER_SKILL, binding.etSignUpSkill.text.toString())
         })
+        makeToastMessage("회원가입에 성공하였습니다.")
         if (!isFinishing) finish()
     }
 }
