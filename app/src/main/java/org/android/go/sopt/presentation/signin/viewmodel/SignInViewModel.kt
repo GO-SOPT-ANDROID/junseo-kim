@@ -18,4 +18,11 @@ class SignInViewModel : ViewModel() {
         return userInfo.userId == inputId && userInfo.userPw == inputPW
     }
 
+    fun getUserName(): String? {
+        return userInfo.userName
+    }
+
+    fun getUserSkill(): String? {
+        return userInfo.userSkill
+    }
 }
