@@ -25,8 +25,16 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun setSignUpBtnClickListener() {
         binding.btnSignUp.setOnClickListener {
-            completeSignUp()
+            if (canUserSignIn()) {
+                completeSignUp()
+            } else {
+                makeToastMessage("회원가입 조건을 지켜주세요.")
+            }
         }
+    }
+
+    private fun canUserSignIn(): Boolean {
+        return binding.etSignUpId.text.length in 6..10 && binding.etSignUpPw.text.length in 8..12
     }
 
     private fun completeSignUp() {
