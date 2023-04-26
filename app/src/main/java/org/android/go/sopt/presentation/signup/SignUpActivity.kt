@@ -30,12 +30,13 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun completeSignUp() {
-        setResult(RESULT_OK, Intent(this, SignInActivity::class.java).apply {
-            putExtra(USER_ID, binding.etSignUpId.text.toString())
-            putExtra(USER_PW, binding.etSignUpPw.text.toString())
-            putExtra(USER_NAME, binding.etSignUpName.text.toString())
-            putExtra(USER_SKILL, binding.etSignUpSkill.text.toString())
-        })
+        setResult(
+            RESULT_OK, Intent(this, SignInActivity::class.java).putExtra(
+                USER_ID, binding.etSignUpId.text.toString()
+            ).putExtra(USER_PW, binding.etSignUpPw.text.toString())
+                .putExtra(USER_NAME, binding.etSignUpName.text.toString())
+                .putExtra(USER_SKILL, binding.etSignUpSkill.text.toString())
+        )
         makeToastMessage("회원가입에 성공하였습니다.")
         if (!isFinishing) finish()
     }
