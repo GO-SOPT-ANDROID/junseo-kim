@@ -16,8 +16,8 @@ import org.android.go.sopt.util.IntentKey.USER_ID
 import org.android.go.sopt.util.IntentKey.USER_NAME
 import org.android.go.sopt.util.IntentKey.USER_PW
 import org.android.go.sopt.util.IntentKey.USER_SKILL
-import org.android.go.sopt.util.hideKeyboard
-import org.android.go.sopt.util.makeToastMessage
+import org.android.go.sopt.util.extensions.hideKeyboard
+import org.android.go.sopt.util.extensions.makeToastMessage
 
 class SignInActivity : AppCompatActivity() {
 

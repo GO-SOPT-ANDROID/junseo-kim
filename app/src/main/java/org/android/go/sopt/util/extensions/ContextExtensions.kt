@@ -1,4 +1,4 @@
-package org.android.go.sopt.util
+package org.android.go.sopt.util.extensions
 
 import android.content.Context
 import android.view.View

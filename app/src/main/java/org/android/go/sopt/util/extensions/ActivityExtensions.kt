@@ -1,4 +1,4 @@
-package org.android.go.sopt.util
+package org.android.go.sopt.util.extensions
 
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
