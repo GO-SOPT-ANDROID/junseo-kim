@@ -14,8 +14,8 @@ class SignInViewModel : ViewModel() {
         return ::userInfo.isInitialized
     }
 
-    fun isUserInfoCorrect(input: UserInfo): Boolean {
-        return userInfo == input
+    fun isUserInfoCorrect(inputId: String, inputPW: String): Boolean {
+        return userInfo.userId == inputId && userInfo.userPw == inputPW
     }
 
 }
