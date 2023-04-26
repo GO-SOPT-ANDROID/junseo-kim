@@ -2,6 +2,7 @@ package org.android.go.sopt.presentation.signup
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.presentation.signin.view.SignInActivity
@@ -9,6 +10,7 @@ import org.android.go.sopt.util.IntentKey.USER_ID
 import org.android.go.sopt.util.IntentKey.USER_NAME
 import org.android.go.sopt.util.IntentKey.USER_PW
 import org.android.go.sopt.util.IntentKey.USER_SKILL
+import org.android.go.sopt.util.hideKeyboard
 import org.android.go.sopt.util.makeToastMessage
 
 class SignUpActivity : AppCompatActivity() {
@@ -36,5 +38,10 @@ class SignUpActivity : AppCompatActivity() {
         })
         makeToastMessage("회원가입에 성공하였습니다.")
         if (!isFinishing) finish()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        hideKeyboard()
+        return super.dispatchTouchEvent(ev)
     }
 }
