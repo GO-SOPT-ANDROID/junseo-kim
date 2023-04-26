@@ -57,8 +57,9 @@ class SignInActivity : AppCompatActivity() {
         startActivity(
             Intent(this, MainActivity::class.java).putExtra(USER_NAME, viewModel.getUserName())
                 .putExtra(USER_SKILL, viewModel.getUserSkill())
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
-        if (!isFinishing) finish()
     }
 
     private fun setSignUpBtnClickListener() {
