@@ -3,11 +3,11 @@ package org.android.go.sopt.presentation.signin.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import org.android.go.sopt.MainActivity
 import org.android.go.sopt.databinding.ActivitySignInBinding
 import org.android.go.sopt.model.UserInfo
 import org.android.go.sopt.presentation.signin.viewmodel.SignInViewModel
@@ -16,12 +16,13 @@ import org.android.go.sopt.util.IntentKey.USER_ID
 import org.android.go.sopt.util.IntentKey.USER_NAME
 import org.android.go.sopt.util.IntentKey.USER_PW
 import org.android.go.sopt.util.IntentKey.USER_SKILL
+import org.android.go.sopt.util.hideKeyboard
 import org.android.go.sopt.util.makeToastMessage
 
 class SignInActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
-    lateinit var signUpResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var signUpResultLauncher: ActivityResultLauncher<Intent>
     private val viewModel by viewModels<SignInViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +30,35 @@ class SignInActivity : AppCompatActivity() {
 
         setSignUpResultLauncher()
         setSignUpBtnClickListener()
+        setSignIpBtnClickListener()
 
         setContentView(binding.root)
+    }
+
+    private fun setSignIpBtnClickListener() {
+        binding.btnSignIn.setOnClickListener {
+            if (viewModel.isUserInfoCreated()) {
+                if (viewModel.isUserInfoCorrect(
+                        binding.etSignInId.text.toString(), binding.etSignInPw.text.toString()
+                    )
+                ) {
+                    makeToastMessage("로그인에 성공하였습니다.")
+                    navigateToMainPage()
+                } else {
+                    makeToastMessage("아이디 또는 비밀번호를 확인해주세요.")
+                }
+            } else {
+                makeToastMessage("회원가입을 먼저 진행해주세요.")
+            }
+        }
+    }
+
+    private fun navigateToMainPage() {
+        startActivity(
+            Intent(this, MainActivity::class.java).putExtra(USER_NAME, viewModel.getUserName())
+                .putExtra(USER_SKILL, viewModel.getUserSkill())
+        )
+        if (!isFinishing) finish()
     }
 
     private fun setSignUpBtnClickListener() {
@@ -64,9 +92,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        val imm: InputMethodManager =
-            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        hideKeyboard()
         return super.dispatchTouchEvent(ev)
     }
 }
