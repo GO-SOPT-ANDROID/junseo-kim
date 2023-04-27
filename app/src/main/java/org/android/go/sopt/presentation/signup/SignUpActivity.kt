@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
+import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.presentation.signin.view.SignInActivity
 import org.android.go.sopt.util.PublicString.USER_ID
@@ -28,7 +29,7 @@ class SignUpActivity : AppCompatActivity() {
             if (canUserSignIn()) {
                 completeSignUp()
             } else {
-                makeToastMessage("회원가입 조건을 지켜주세요.")
+                makeToastMessage(getString(R.string.please_abide_by_the_membership_registration_conditions))
             }
         }
     }
@@ -45,7 +46,7 @@ class SignUpActivity : AppCompatActivity() {
                 .putExtra(USER_NAME, binding.etSignUpName.text.toString())
                 .putExtra(USER_SKILL, binding.etSignUpSkill.text.toString())
         )
-        makeToastMessage("회원가입에 성공하였습니다.")
+        makeToastMessage(getString(R.string.you_have_successfully_registered_as_a_member))
         if (!isFinishing) finish()
     }
 

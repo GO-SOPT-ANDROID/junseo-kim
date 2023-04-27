@@ -60,14 +60,14 @@ class SignInActivity : AppCompatActivity() {
                         binding.etSignInId.text.toString(), binding.etSignInPw.text.toString()
                     )
                 ) {
-                    makeToastMessage("로그인에 성공하였습니다.")
+                    makeToastMessage(getString(R.string.login_was_successful))
                     navigateToMainPage()
                     setAutoSignIn()
                 } else {
-                    makeToastMessage("아이디 또는 비밀번호를 확인해주세요.")
+                    makeToastMessage(getString(R.string.please_check_your_id_or_password))
                 }
             } else {
-                makeToastMessage("회원가입을 먼저 진행해주세요.")
+                makeToastMessage(getString(R.string.please_register_as_a_member_first))
             }
         }
     }
@@ -100,7 +100,7 @@ class SignInActivity : AppCompatActivity() {
                 if (result.resultCode == RESULT_OK) {
                     saveUserInfo(result.data)
                 } else {
-                    makeToastMessage("회원가입에 실패하였습니다.")
+                    makeToastMessage(getString(R.string.member_registration_failed))
                 }
             }
     }

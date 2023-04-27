@@ -4,4 +4,10 @@
     <string name="user_skill_is">특기 : %s</string>
     <string name="shared_preferences_key">SOPT Shared Preferences</string>
     <string name="is_user_sign_in">is_user_sign_in</string>
+    <string name="login_was_successful">로그인에 성공하였습니다.</string>
+    <string name="please_check_your_id_or_password">아이디 또는 비밀번호를 확인해주세요.</string>
+    <string name="please_register_as_a_member_first">회원가입을 먼저 진행해주세요.</string>
+    <string name="member_registration_failed">회원가입에 실패하였습니다.</string>
+    <string name="you_have_successfully_registered_as_a_member">회원가입에 성공하였습니다.</string>
+    <string name="please_abide_by_the_membership_registration_conditions">회원가입 조건을 지켜주세요.</string>
 </resources>
