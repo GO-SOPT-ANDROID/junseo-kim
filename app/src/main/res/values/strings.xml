@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">GO SOPT Android</string>
     <string name="user_name_is">이름 : %s</string>
-    <string name="user_skill_is">특기 :%s</string>
+    <string name="user_skill_is">특기 : %s</string>
+    <string name="shared_preferences_key">SOPT Shared Preferences</string>
+    <string name="is_user_sign_in">is_user_sign_in</string>
 </resources>
