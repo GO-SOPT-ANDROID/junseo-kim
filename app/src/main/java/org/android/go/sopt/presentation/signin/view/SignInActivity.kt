@@ -75,8 +75,8 @@ class SignInActivity : AppCompatActivity() {
     private fun setAutoSignIn() {
         SharedPreferences.run {
             setBoolean(getString(R.string.is_user_sign_in), true)
-            setString(USER_NAME, intent.getStringExtra(USER_NAME))
-            setString(USER_SKILL, intent.getStringExtra(USER_SKILL))
+            setString(USER_NAME, viewModel.getUserName())
+            setString(USER_SKILL, viewModel.getUserSkill())
         }
     }
 
