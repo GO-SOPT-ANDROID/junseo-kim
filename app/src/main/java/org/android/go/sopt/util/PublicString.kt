@@ -1,6 +1,10 @@
 package org.android.go.sopt.util
 
-object IntentKey {
+object PublicString {
+    // Public Strings
+    const val BLANK = ""
+
+    // Intent Keys
     const val USER_ID = "USER_ID"
     const val USER_PW = "USER_PW"
     const val USER_NAME = "USER_NAME"
