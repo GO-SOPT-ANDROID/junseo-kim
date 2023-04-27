@@ -7,15 +7,15 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import org.android.go.sopt.data.model.UserInfo
 import org.android.go.sopt.databinding.ActivitySignInBinding
-import org.android.go.sopt.model.UserInfo
 import org.android.go.sopt.presentation.main.view.MainActivity
 import org.android.go.sopt.presentation.signin.viewmodel.SignInViewModel
 import org.android.go.sopt.presentation.signup.SignUpActivity
-import org.android.go.sopt.util.IntentKey.USER_ID
-import org.android.go.sopt.util.IntentKey.USER_NAME
-import org.android.go.sopt.util.IntentKey.USER_PW
-import org.android.go.sopt.util.IntentKey.USER_SKILL
+import org.android.go.sopt.util.PublicString.USER_ID
+import org.android.go.sopt.util.PublicString.USER_NAME
+import org.android.go.sopt.util.PublicString.USER_PW
+import org.android.go.sopt.util.PublicString.USER_SKILL
 import org.android.go.sopt.util.extensions.hideKeyboard
 import org.android.go.sopt.util.extensions.makeToastMessage
 

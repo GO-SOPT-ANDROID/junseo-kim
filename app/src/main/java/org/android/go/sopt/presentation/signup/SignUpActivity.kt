@@ -6,10 +6,10 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.presentation.signin.view.SignInActivity
-import org.android.go.sopt.util.IntentKey.USER_ID
-import org.android.go.sopt.util.IntentKey.USER_NAME
-import org.android.go.sopt.util.IntentKey.USER_PW
-import org.android.go.sopt.util.IntentKey.USER_SKILL
+import org.android.go.sopt.util.PublicString.USER_ID
+import org.android.go.sopt.util.PublicString.USER_NAME
+import org.android.go.sopt.util.PublicString.USER_PW
+import org.android.go.sopt.util.PublicString.USER_SKILL
 import org.android.go.sopt.util.extensions.hideKeyboard
 import org.android.go.sopt.util.extensions.makeToastMessage
 

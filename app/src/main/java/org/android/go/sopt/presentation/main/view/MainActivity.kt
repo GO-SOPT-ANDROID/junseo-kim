@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ActivityMainBinding
-import org.android.go.sopt.util.IntentKey.USER_NAME
-import org.android.go.sopt.util.IntentKey.USER_SKILL
+import org.android.go.sopt.util.PublicString.USER_NAME
+import org.android.go.sopt.util.PublicString.USER_SKILL
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
