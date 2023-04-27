@@ -4,7 +4,6 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import org.android.go.sopt.R
-import org.android.go.sopt.util.PublicString.BLANK
 
 object SharedPreferences {
     private lateinit var preferences: SharedPreferences
@@ -31,7 +30,7 @@ object SharedPreferences {
     }
 
     fun getString(key: String): String? {
-        return preferences.getString(key, BLANK)
+        return preferences.getString(key, "")
     }
 
     fun setBoolean(key: String, boolean: Boolean) {
