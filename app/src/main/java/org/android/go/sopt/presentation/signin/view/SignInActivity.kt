@@ -1,5 +1,6 @@
 package org.android.go.sopt.presentation.signin.view
 
+import SharedPreferences
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
@@ -7,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import org.android.go.sopt.R
 import org.android.go.sopt.data.model.UserInfo
 import org.android.go.sopt.databinding.ActivitySignInBinding
 import org.android.go.sopt.presentation.main.view.MainActivity
@@ -31,8 +33,24 @@ class SignInActivity : AppCompatActivity() {
         setSignUpResultLauncher()
         setSignUpBtnClickListener()
         setSignIpBtnClickListener()
+        navigateToMainPageForSignedInUser()
 
         setContentView(binding.root)
+    }
+
+    private fun navigateToMainPageForSignedInUser() {
+        if (SharedPreferences.getBoolean(getString(R.string.is_user_sign_in))) navigateToMainPageByAutoSignIn()
+    }
+
+    private fun navigateToMainPageByAutoSignIn() {
+        startActivity(
+            Intent(this, MainActivity::class.java).putExtra(
+                USER_NAME, SharedPreferences.getString(
+                    USER_NAME
+                )
+            ).putExtra(USER_SKILL, SharedPreferences.getString(USER_SKILL))
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
     }
 
     private fun setSignIpBtnClickListener() {
@@ -44,6 +62,7 @@ class SignInActivity : AppCompatActivity() {
                 ) {
                     makeToastMessage("로그인에 성공하였습니다.")
                     navigateToMainPage()
+                    setAutoSignIn()
                 } else {
                     makeToastMessage("아이디 또는 비밀번호를 확인해주세요.")
                 }
@@ -53,12 +72,19 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    private fun setAutoSignIn() {
+        SharedPreferences.run {
+            setBoolean(getString(R.string.is_user_sign_in), true)
+            setString(USER_NAME, intent.getStringExtra(USER_NAME))
+            setString(USER_SKILL, intent.getStringExtra(USER_SKILL))
+        }
+    }
+
     private fun navigateToMainPage() {
         startActivity(
             Intent(this, MainActivity::class.java).putExtra(USER_NAME, viewModel.getUserName())
                 .putExtra(USER_SKILL, viewModel.getUserSkill())
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     }
 
