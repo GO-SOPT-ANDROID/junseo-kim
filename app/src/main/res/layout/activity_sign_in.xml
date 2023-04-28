@@ -41,7 +41,7 @@
             android:layout_marginTop="14dp"
             android:hint="@string/please_enter_your_id"
             android:inputType="text"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
