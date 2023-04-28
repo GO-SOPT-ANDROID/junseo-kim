@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">GO SOPT Android</string>
+    <string name="user_name_is">이름 : %s</string>
+    <string name="user_skill_is">특기 : %s</string>
+    <string name="shared_preferences_key">SOPT Shared Preferences</string>
+    <string name="is_user_sign_in">is_user_sign_in</string>
+    <string name="login_was_successful">로그인에 성공하였습니다.</string>
+    <string name="please_check_your_id_or_password">아이디 또는 비밀번호를 확인해주세요.</string>
+    <string name="please_register_as_a_member_first">회원가입을 먼저 진행해주세요.</string>
+    <string name="member_registration_failed">회원가입에 실패하였습니다.</string>
+    <string name="you_have_successfully_registered_as_a_member">회원가입에 성공하였습니다.</string>
+    <string name="please_abide_by_the_membership_registration_conditions">회원가입 조건을 지켜주세요.</string>
+    <string name="cd_user_profile_image">user profile image</string>
+    <string name="sign_out">로그아웃</string>
+    <string name="sign_in_title">Welcome to GO Android</string>
+    <string name="id">ID</string>
+    <string name="please_enter_your_id">아이디를 입력하세요.</string>
+    <string name="pw">비밀번호</string>
+    <string name="please_enter_your_pw">비밀번호를 입력하세요.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_title">Please Sign Up</string>
+    <string name="name">이름</string>
+    <string name="please_enter_your_name">이름을 입력하세요.</string>
+    <string name="skill">특기</string>
+    <string name="please_enter_your_skill">무슨 특기가 있나요?</string>
 </resources>
