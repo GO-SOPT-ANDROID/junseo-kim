@@ -24,4 +24,8 @@
     <string name="please_enter_your_name">이름을 입력하세요.</string>
     <string name="skill">특기</string>
     <string name="please_enter_your_skill">무슨 특기가 있나요?</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="gallery">Gallery</string>
+    <string name="my_page">My Page</string>
 </resources>
