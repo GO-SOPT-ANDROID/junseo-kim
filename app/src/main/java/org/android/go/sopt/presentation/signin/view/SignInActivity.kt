@@ -55,20 +55,20 @@ class SignInActivity : AppCompatActivity() {
 
     private fun setSignIpBtnClickListener() {
         binding.btnSignIn.setOnClickListener {
-            if (viewModel.isUserInfoCreated()) {
-                if (viewModel.isUserInfoCorrect(
-                        binding.etSignInId.text.toString(), binding.etSignInPw.text.toString()
-                    )
-                ) {
-                    makeToastMessage(getString(R.string.login_was_successful))
-                    navigateToMainPage()
-                    setAutoSignIn()
-                } else {
-                    makeToastMessage(getString(R.string.please_check_your_id_or_password))
-                }
-            } else {
+            if (!viewModel.isUserInfoCreated()) {
                 makeToastMessage(getString(R.string.please_register_as_a_member_first))
+                return@setOnClickListener
             }
+
+            if (viewModel.isUserInfoCorrect(
+                    binding.etSignInId.text.toString(), binding.etSignInPw.text.toString()
+                )
+            ) {
+                makeToastMessage(getString(R.string.login_was_successful))
+                navigateToMainPage()
+                setAutoSignIn()
+            } else makeToastMessage(getString(R.string.please_check_your_id_or_password))
+
         }
     }
 
