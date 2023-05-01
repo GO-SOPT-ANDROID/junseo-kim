@@ -51,17 +51,6 @@ class MyPageFragment : Fragment() {
         setInfoForSignedInUser()
     }
 
-//    private fun setInfoForFirstUser() {
-//        with(binding) {
-//            ivMainUser.setImageResource(R.drawable.img_user_profile)
-//            tvMainUserName.text =
-//                getString(R.string.user_name_is, viewModel.getNameOfUser())
-//            tvMainUserSkill.text = getString(
-//                R.string.user_skill_is, viewModel.getSkillOfUser()
-//            )
-//        }
-//    }
-
     private fun setInfoForSignedInUser() {
         with(binding) {
             ivMainUser.setImageResource(R.drawable.img_user_profile)
