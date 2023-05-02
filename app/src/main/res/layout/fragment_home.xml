@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -13,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:spanCount="2"
+        app:spanCount="3"
         tools:listitem="@layout/item_go_android" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
