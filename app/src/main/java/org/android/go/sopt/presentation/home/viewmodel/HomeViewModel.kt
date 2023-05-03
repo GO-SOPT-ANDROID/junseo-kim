@@ -6,7 +6,10 @@ import org.android.go.sopt.data.model.PartMember
 
 class HomeViewModel : ViewModel() {
     private val partMemberList: List<PartMember> = listOf(
-        PartMember(R.drawable.img_junseo, "김준서"),
+        PartMember(R.drawable.img_android, "Hello Go Android !"),
+        PartMember(
+            R.drawable.img_junseo, "김준서"
+        ),
         PartMember(R.drawable.img_daehwan, "계대환"),
         PartMember(R.drawable.img_eujin, "곽의진"),
         PartMember(R.drawable.img_minjeong, "김민정"),
