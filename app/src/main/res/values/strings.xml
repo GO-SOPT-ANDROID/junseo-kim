@@ -28,4 +28,6 @@
     <string name="search">Search</string>
     <string name="gallery">Gallery</string>
     <string name="my_page">My Page</string>
+    <string name="selected_member">Selected member</string>
+    <string name="hello_go_android">Hello Go android!</string>
 </resources>
