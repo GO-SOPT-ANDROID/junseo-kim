@@ -37,6 +37,10 @@ class HomeFragment : Fragment() {
         adapter.submitList(viewModel.getPartMemberList())
     }
 
+    fun smoothScrollToTop() {
+        binding.rvHome.smoothScrollToPosition(0)
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
