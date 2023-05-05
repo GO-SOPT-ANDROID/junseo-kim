@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ActivityMainBinding
-import org.android.go.sopt.presentation.gallery.view.HomeFragment
-import org.android.go.sopt.presentation.home.view.GalleryFragment
+import org.android.go.sopt.presentation.home.view.HomeFragment
+import org.android.go.sopt.presentation.gallery.view.GalleryFragment
 import org.android.go.sopt.presentation.mypage.view.MyPageFragment
 import org.android.go.sopt.presentation.search.view.SearchFragment
 

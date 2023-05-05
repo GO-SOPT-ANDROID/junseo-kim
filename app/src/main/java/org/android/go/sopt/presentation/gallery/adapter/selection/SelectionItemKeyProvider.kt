@@ -1,4 +1,4 @@
-package org.android.go.sopt.presentation.home.adapter.selection
+package org.android.go.sopt.presentation.gallery.adapter.selection
 
 import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.widget.RecyclerView

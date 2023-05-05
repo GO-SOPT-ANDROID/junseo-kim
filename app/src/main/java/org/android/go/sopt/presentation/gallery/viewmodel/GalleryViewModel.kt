@@ -1,4 +1,4 @@
-package org.android.go.sopt.presentation.home.viewmodel
+package org.android.go.sopt.presentation.gallery.viewmodel
 
 import androidx.lifecycle.ViewModel
 import org.android.go.sopt.R

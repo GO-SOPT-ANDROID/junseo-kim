@@ -1,9 +1,9 @@
-package org.android.go.sopt.presentation.home.adapter.selection
+package org.android.go.sopt.presentation.gallery.adapter.selection
 
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.widget.RecyclerView
-import org.android.go.sopt.presentation.home.adapter.GoAndroidAdapter
+import org.android.go.sopt.presentation.gallery.adapter.GoAndroidAdapter
 
 class GoAndroidItemDetailsLookup(private val recyclerView: RecyclerView) :
     ItemDetailsLookup<Long>() {

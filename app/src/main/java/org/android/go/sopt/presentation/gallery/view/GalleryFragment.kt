@@ -1,4 +1,4 @@
-package org.android.go.sopt.presentation.home.view
+package org.android.go.sopt.presentation.gallery.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.FragmentGalleryBinding
-import org.android.go.sopt.presentation.home.adapter.GoAndroidAdapter
-import org.android.go.sopt.presentation.home.adapter.selection.GoAndroidItemDetailsLookup
-import org.android.go.sopt.presentation.home.adapter.selection.SelectionItemKeyProvider
-import org.android.go.sopt.presentation.home.viewmodel.GalleryViewModel
+import org.android.go.sopt.presentation.gallery.adapter.GoAndroidAdapter
+import org.android.go.sopt.presentation.gallery.adapter.selection.GoAndroidItemDetailsLookup
+import org.android.go.sopt.presentation.gallery.adapter.selection.SelectionItemKeyProvider
+import org.android.go.sopt.presentation.gallery.viewmodel.GalleryViewModel
 
 class GalleryFragment : Fragment() {
 
