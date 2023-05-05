@@ -9,25 +9,25 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import org.android.go.sopt.R
-import org.android.go.sopt.databinding.FragmentHomeBinding
+import org.android.go.sopt.databinding.FragmentGalleryBinding
 import org.android.go.sopt.presentation.home.adapter.GoAndroidAdapter
 import org.android.go.sopt.presentation.home.adapter.selection.GoAndroidItemDetailsLookup
 import org.android.go.sopt.presentation.home.adapter.selection.SelectionItemKeyProvider
-import org.android.go.sopt.presentation.home.viewmodel.HomeViewModel
+import org.android.go.sopt.presentation.home.viewmodel.GalleryViewModel
 
-class HomeFragment : Fragment() {
+class GalleryFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding: FragmentHomeBinding
+    private var _binding: FragmentGalleryBinding? = null
+    private val binding: FragmentGalleryBinding
         get() = requireNotNull(_binding) { "binding is null ...." }
-    private val viewModel by viewModels<HomeViewModel>()
+    private val viewModel by viewModels<GalleryViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
 
     private fun initRecyclerView() {
         val adapter = GoAndroidAdapter()
-        binding.rvHome.adapter = adapter
+        binding.rvGallery.adapter = adapter
         adapter.submitList(viewModel.getPartMemberList())
         val tracker = buildTracker()
         adapter.setSelectionTracker(tracker)
@@ -47,14 +47,14 @@ class HomeFragment : Fragment() {
 
     private fun buildTracker(): SelectionTracker<Long> = SelectionTracker.Builder(
         getString(R.string.selected_member),
-        binding.rvHome,
-        SelectionItemKeyProvider(binding.rvHome),
-        GoAndroidItemDetailsLookup(binding.rvHome),
+        binding.rvGallery,
+        SelectionItemKeyProvider(binding.rvGallery),
+        GoAndroidItemDetailsLookup(binding.rvGallery),
         StorageStrategy.createLongStorage(),
     ).build()
 
     fun smoothScrollToTop() {
-        binding.rvHome.smoothScrollToPosition(0)
+        binding.rvGallery.smoothScrollToPosition(0)
     }
 
     override fun onDestroyView() {

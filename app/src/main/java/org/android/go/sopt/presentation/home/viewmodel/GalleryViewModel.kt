@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import org.android.go.sopt.R
 import org.android.go.sopt.data.model.PartMember
 
-class HomeViewModel : ViewModel() {
+class GalleryViewModel : ViewModel() {
     private val partMemberList: List<PartMember> = listOf(
         PartMember(R.drawable.img_android, "Hello Go Android !"),
         PartMember(

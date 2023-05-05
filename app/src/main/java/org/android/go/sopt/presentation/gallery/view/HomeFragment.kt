@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.android.go.sopt.databinding.FragmentGalleryBinding
 
-class GalleryFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentGalleryBinding? = null
     private val binding: FragmentGalleryBinding
