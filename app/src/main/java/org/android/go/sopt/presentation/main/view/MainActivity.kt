@@ -20,6 +20,15 @@ class MainActivity : AppCompatActivity() {
 
         initFirstFragment(savedInstanceState)
         initBottomNavigationSelectListener()
+        initBottomNavigationReselectListener()
+    }
+
+    private fun initBottomNavigationReselectListener() {
+        binding.bnvMain.setOnItemReselectedListener {
+            val currentFragment = supportFragmentManager.fragments.last()
+            if (it.itemId == R.id.menu_home || currentFragment is HomeFragment)
+                (currentFragment as HomeFragment).smoothScrollToTop()
+        }
     }
 
     private fun initFirstFragment(savedInstanceState: Bundle?) {

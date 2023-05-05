@@ -4,6 +4,6 @@ import androidx.annotation.DrawableRes
 
 data class PartMember(
     @DrawableRes
-    val memberImage: Int,
-    val memberName: String,
+    val imageResourceContent: Int,
+    val stringContent: String,
 )
