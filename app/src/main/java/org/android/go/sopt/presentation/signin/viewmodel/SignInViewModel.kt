@@ -1,7 +1,7 @@
 package org.android.go.sopt.presentation.signin.viewmodel
 
 import androidx.lifecycle.ViewModel
-import org.android.go.sopt.data.model.UserInfo
+import org.android.go.sopt.data.local.model.UserInfo
 
 class SignInViewModel : ViewModel() {
     private lateinit var userInfo: UserInfo

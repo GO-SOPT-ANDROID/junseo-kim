@@ -2,7 +2,7 @@ package org.android.go.sopt.presentation.gallery.viewmodel
 
 import androidx.lifecycle.ViewModel
 import org.android.go.sopt.R
-import org.android.go.sopt.data.model.PartMember
+import org.android.go.sopt.data.local.model.PartMember
 
 class GalleryViewModel : ViewModel() {
     private val partMemberList: List<PartMember> = listOf(

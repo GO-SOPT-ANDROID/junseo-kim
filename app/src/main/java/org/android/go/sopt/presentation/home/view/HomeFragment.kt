@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import org.android.go.sopt.databinding.FragmentGalleryBinding
+import org.android.go.sopt.R
 import org.android.go.sopt.databinding.FragmentHomeBinding
+import org.android.go.sopt.presentation.home.view.adapter.ViewPagerAdapter
 
 class HomeFragment : Fragment() {
 
@@ -26,6 +27,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.pagerHome.adapter = ViewPagerAdapter(
+            listOf(
+                R.drawable.img_subin,
+                R.drawable.img_gaeun,
+                R.drawable.img_taehee
+            )
+        )
     }
 
     override fun onDestroyView() {

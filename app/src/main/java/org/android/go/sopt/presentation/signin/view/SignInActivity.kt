@@ -4,12 +4,10 @@ import SharedPreferences
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.R
-import org.android.go.sopt.data.model.UserInfo
+import org.android.go.sopt.data.local.model.UserInfo
 import org.android.go.sopt.databinding.ActivitySignInBinding
 import org.android.go.sopt.presentation.main.view.MainActivity
 import org.android.go.sopt.presentation.signin.viewmodel.SignInViewModel
@@ -24,13 +22,11 @@ import org.android.go.sopt.util.extensions.makeToastMessage
 class SignInActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
-    private lateinit var signUpResultLauncher: ActivityResultLauncher<Intent>
     private val viewModel by viewModels<SignInViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setSignUpResultLauncher()
         setSignUpBtnClickListener()
         setSignIpBtnClickListener()
         navigateToMainPageForSignedInUser()
@@ -90,19 +86,8 @@ class SignInActivity : AppCompatActivity() {
 
     private fun setSignUpBtnClickListener() {
         binding.btnSignUp.setOnClickListener {
-            signUpResultLauncher.launch(Intent(this, SignUpActivity::class.java))
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
-    }
-
-    private fun setSignUpResultLauncher() {
-        signUpResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    saveUserInfo(result.data)
-                } else {
-                    makeToastMessage(getString(R.string.member_registration_failed))
-                }
-            }
     }
 
     private fun saveUserInfo(info: Intent?) {

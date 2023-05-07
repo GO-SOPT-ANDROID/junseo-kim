@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.android.go.sopt.R
-import org.android.go.sopt.data.model.PartMember
+import org.android.go.sopt.data.local.model.PartMember
 import org.android.go.sopt.databinding.ItemGoAndroidBinding
 import org.android.go.sopt.databinding.ItemGoAndroidHeaderBinding
 import org.android.go.sopt.util.extensions.makeToastMessage
