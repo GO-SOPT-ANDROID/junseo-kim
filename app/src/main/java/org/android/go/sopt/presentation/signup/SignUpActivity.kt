@@ -11,6 +11,9 @@ import org.android.go.sopt.data.remote.model.RequestSignUpDto
 import org.android.go.sopt.data.remote.model.ResponseSignUpDto
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.presentation.signin.view.SignInActivity
+import org.android.go.sopt.util.PublicString.CONNECTION_FAIL
+import org.android.go.sopt.util.PublicString.SERVER_COMMUNICATION_SUCCESS
+import org.android.go.sopt.util.PublicString.UNEXPECTED_ERROR
 import org.android.go.sopt.util.PublicString.USER_ID
 import org.android.go.sopt.util.PublicString.USER_NAME
 import org.android.go.sopt.util.PublicString.USER_PW
@@ -58,14 +61,14 @@ class SignUpActivity : AppCompatActivity() {
                                 )
                                 Toast.makeText(
                                     this@SignUpActivity,
-                                    response.body()?.message ?: "회원가입에 성공하였습니다.",
+                                    response.body()?.message ?: SERVER_COMMUNICATION_SUCCESS,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
                                 // 서버통신 실패(40X)
                                 Toast.makeText(
                                     this@SignUpActivity,
-                                    response.body()?.message ?: "예기치 않은 오류가 발생했습니다.",
+                                    response.body()?.message ?: UNEXPECTED_ERROR,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -75,7 +78,7 @@ class SignUpActivity : AppCompatActivity() {
                             // 응답이 안 왔다.
                             Toast.makeText(
                                 this@SignUpActivity,
-                                "서버통신 실패 (응답값X)",
+                                CONNECTION_FAIL,
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
