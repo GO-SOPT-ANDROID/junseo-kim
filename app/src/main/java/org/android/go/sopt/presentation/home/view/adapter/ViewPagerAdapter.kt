@@ -3,12 +3,15 @@ package org.android.go.sopt.presentation.home.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import org.android.go.sopt.data.remote.model.ResponseReqresDto
 import org.android.go.sopt.databinding.ItemPagerBinding
 
-class ViewPagerAdapter(_itemList: List<Int>) :
+class ViewPagerAdapter(_itemList: List<ResponseReqresDto.User>?) :
     RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
     lateinit var binding: ItemPagerBinding
-    private var itemList: List<Int> = _itemList
+    private var itemList: List<ResponseReqresDto.User> =
+        _itemList ?: listOf()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder {
@@ -18,8 +21,8 @@ class ViewPagerAdapter(_itemList: List<Int>) :
 
     class PagerViewHolder(private val binding: ItemPagerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(src: Int) {
-            binding.ivPager.setImageResource(src)
+        fun onBind(item: ResponseReqresDto.User) {
+            binding.ivPager.load(item.avatar)
         }
     }
 
@@ -30,7 +33,7 @@ class ViewPagerAdapter(_itemList: List<Int>) :
 
     override fun getItemCount(): Int = itemList.size
 
-    fun setItemList(itemList: List<Int>) {
+    fun setItemList(itemList: List<ResponseReqresDto.User>) {
         this.itemList = itemList
         notifyDataSetChanged()
     }
