@@ -4,7 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import org.android.go.sopt.BuildConfig
-import org.android.go.sopt.data.remote.service.SignUpService
+import org.android.go.sopt.data.remote.services.SignUpService
 import retrofit2.Retrofit
 
 object ApiFactory {
