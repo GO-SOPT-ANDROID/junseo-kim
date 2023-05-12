@@ -59,18 +59,14 @@ class SignUpActivity : AppCompatActivity() {
                                         SignInActivity::class.java
                                     )
                                 )
-                                Toast.makeText(
-                                    this@SignUpActivity,
-                                    response.body()?.message ?: SERVER_COMMUNICATION_SUCCESS,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                makeToastMessage(
+                                    response.body()?.message ?: SERVER_COMMUNICATION_SUCCESS
+                                )
                             } else {
                                 // 서버통신 실패(40X)
-                                Toast.makeText(
-                                    this@SignUpActivity,
-                                    response.body()?.message ?: UNEXPECTED_ERROR,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                makeToastMessage(
+                                    response.body()?.message ?: UNEXPECTED_ERROR
+                                )
                             }
                         }
 
