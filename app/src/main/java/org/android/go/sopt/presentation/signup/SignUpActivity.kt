@@ -65,7 +65,7 @@ class SignUpActivity : AppCompatActivity() {
                                 // 서버통신 실패(40X)
                                 Toast.makeText(
                                     this@SignUpActivity,
-                                    "서버통신 실패 (40X)",
+                                    response.body()?.message ?: "예기치 않은 오류가 발생했습니다.",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
