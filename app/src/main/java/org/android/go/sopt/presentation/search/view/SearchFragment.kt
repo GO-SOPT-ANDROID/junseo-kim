@@ -16,6 +16,8 @@ import org.android.go.sopt.util.extensions.makeToastMessage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Timer
+import java.util.TimerTask
 
 class SearchFragment : Fragment() {
 
@@ -24,6 +26,7 @@ class SearchFragment : Fragment() {
         get() = requireNotNull(_binding) { "binding is null ...." }
     private val kakaoSearchService by lazy { ServicePool.kakaoSearchService }
     private val adapter by lazy { KakaoSearchResultAdapter() }
+    private var debounceTimer: Timer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,44 +40,69 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvSearch.adapter = adapter
+        initAdapter()
+        setKakaoSearchViewQueryTextChangeEvent()
+    }
 
+    private fun setKakaoSearchViewQueryTextChangeEvent() {
         binding.svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                kakaoSearchService.search(keyword = binding.svSearch.query.toString()).enqueue(
-                    object : Callback<ResponseKakaoSearchDto> {
-                        override fun onResponse(
-                            call: Call<ResponseKakaoSearchDto>,
-                            response: Response<ResponseKakaoSearchDto>,
-                        ) {
-                            if (response.isSuccessful) {
-                                adapter.submitList(
-                                    response.body()?.documents
-                                        ?: listOf<ResponseKakaoSearchDto.Document>()
-                                )
-                            } else {
-                                makeToastMessage(UNEXPECTED_ERROR)
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ResponseKakaoSearchDto>, t: Throwable) {
-                            makeToastMessage(CONNECTION_FAIL)
-                        }
-
-                    }
-                )
+            override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
             }
 
-            override fun onQueryTextChange(p0: String?): Boolean {
+            override fun onQueryTextChange(query: String?): Boolean {
+                debounceTimer?.cancel()
+
+                debounceTimer = Timer()
+                debounceTimer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        if (query != null) {
+                            getKakaoSearchResult(query)
+                        }
+                    }
+                }, DEBOUNCE_DELAY)
+
                 return true
             }
 
         })
     }
 
+    private fun initAdapter() {
+        binding.rvSearch.adapter = adapter
+    }
+
+    private fun getKakaoSearchResult(query: String) {
+        kakaoSearchService.search(keyword = query).enqueue(
+            object : Callback<ResponseKakaoSearchDto> {
+                override fun onResponse(
+                    call: Call<ResponseKakaoSearchDto>,
+                    response: Response<ResponseKakaoSearchDto>,
+                ) {
+                    if (response.isSuccessful) {
+                        adapter.submitList(
+                            response.body()?.documents
+                                ?: listOf<ResponseKakaoSearchDto.Document>()
+                        )
+                    } else {
+                        makeToastMessage(UNEXPECTED_ERROR)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseKakaoSearchDto>, t: Throwable) {
+                    makeToastMessage(CONNECTION_FAIL)
+                }
+
+            }
+        )
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    companion object {
+        const val DEBOUNCE_DELAY: Long = 300
     }
 }
