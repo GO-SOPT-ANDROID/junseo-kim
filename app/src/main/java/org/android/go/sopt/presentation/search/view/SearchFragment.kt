@@ -24,7 +24,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
         get() = requireNotNull(_binding) { "binding is null ...." }
-    private val adapter by lazy { KakaoSearchResultAdapter() }
+    private var adapter: KakaoSearchResultAdapter? = null
     private var debounceTimer: Timer? = null
 
     override fun onCreateView(
@@ -82,7 +82,7 @@ class SearchFragment : Fragment() {
                     response: Response<ResponseKakaoSearchDto>,
                 ) {
                     if (response.isSuccessful) {
-                        adapter.submitList(
+                        adapter?.submitList(
                             response.body()?.documents
                                 ?: listOf<ResponseKakaoSearchDto.Document>()
                         )
@@ -101,6 +101,7 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
+        adapter = null
         super.onDestroyView()
     }
 

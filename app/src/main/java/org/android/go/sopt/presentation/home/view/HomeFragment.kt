@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import org.android.go.sopt.data.remote.ServicePool
 import org.android.go.sopt.data.remote.ServicePool.reqresService
 import org.android.go.sopt.data.remote.model.ResponseReqresDto
 import org.android.go.sopt.databinding.FragmentHomeBinding
@@ -23,6 +22,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding) { "binding is null ...." }
+
+    private var adapter: ViewPagerAdapter? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,9 +48,8 @@ class HomeFragment : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     makeToastMessage(SERVER_COMMUNICATION_SUCCESS)
-                    binding.pagerHome.adapter = ViewPagerAdapter(
-                        response.body()?.data
-                    )
+                    adapter = ViewPagerAdapter(response.body()?.data)
+                    binding.pagerHome.adapter = adapter
                 } else {
                     makeToastMessage(UNEXPECTED_ERROR)
                 }
@@ -63,6 +64,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
+        adapter = null
         super.onDestroyView()
     }
 }
