@@ -52,20 +52,22 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                if (query != null) {
-                    debounceSearch(query)
-                }
+                debounceSearch(query)
                 return true
             }
 
         })
     }
 
-    private fun debounceSearch(query: String) {
+    private fun debounceSearch(query: String?) {
         debounceJob?.cancel()
         debounceJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(DEBOUNCE_DELAY)
-            getKakaoSearchResult(query)
+            if (!query.isNullOrBlank()) {
+                getKakaoSearchResult(query)
+            } else {
+                adapter?.submitList(emptyList())
+            }
         }
     }
 
