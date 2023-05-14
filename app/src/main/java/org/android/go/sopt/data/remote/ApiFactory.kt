@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.android.go.sopt.BuildConfig
+import org.android.go.sopt.data.remote.services.KakaoSearchService
 import org.android.go.sopt.data.remote.services.ReqresService
 import org.android.go.sopt.data.remote.services.SignInService
 import org.android.go.sopt.data.remote.services.SignUpService
@@ -20,7 +21,8 @@ object ApiFactory {
 
     val retrofitForAuth: Retrofit by lazy {
         Retrofit.Builder().baseUrl(BuildConfig.AUTH_BASE_URL)
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType())).build()
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .client(client).build()
     }
 
     inline fun <reified T> createAuthService(): T = retrofitForAuth.create<T>(T::class.java)
@@ -32,10 +34,20 @@ object ApiFactory {
     }
 
     inline fun <reified T> createReqresService(): T = retrofitForReqres.create<T>(T::class.java)
+
+    val retrofitForKakao: Retrofit by lazy {
+        Retrofit.Builder().baseUrl(BuildConfig.KAKAO_BASE_URL)
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .client(client)
+            .build()
+    }
+
+    inline fun <reified T> createKakaoService(): T = retrofitForKakao.create<T>(T::class.java)
 }
 
 object ServicePool {
     val signUpService = ApiFactory.createAuthService<SignUpService>()
     val signInService = ApiFactory.createAuthService<SignInService>()
     val reqresService = ApiFactory.createReqresService<ReqresService>()
+    val kakaoSearchService = ApiFactory.createKakaoService<KakaoSearchService>()
 }
