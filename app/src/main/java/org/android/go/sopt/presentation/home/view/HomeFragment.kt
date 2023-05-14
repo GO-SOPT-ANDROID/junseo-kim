@@ -22,8 +22,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding) { "binding is null ...." }
-    private val reqresService = ServicePool.reqresService
-
+    private val reqresService by lazy { ServicePool.reqresService }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
