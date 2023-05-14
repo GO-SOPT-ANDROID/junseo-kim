@@ -21,6 +21,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "AUTH_BASE_URL", properties["auth.base.url"]
         buildConfigField "String", "REQRES_BASE_URL", properties["reqres.base.url"]
+        buildConfigField "String", "KAKAO_BASE_URL", properties["kakao.base.url"]
+        buildConfigField "String", "KAKAO_REST_API_KEY", properties["kakao.rest.api.key"]
     }
 
     buildTypes {
