@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.R
 import org.android.go.sopt.data.remote.ServicePool
+import org.android.go.sopt.data.remote.ServicePool.signUpService
 import org.android.go.sopt.data.remote.model.RequestSignUpDto
 import org.android.go.sopt.data.remote.model.ResponseSignUpDto
 import org.android.go.sopt.databinding.ActivitySignUpBinding
@@ -26,7 +27,6 @@ import retrofit2.Response
 class SignUpActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignUpBinding.inflate(layoutInflater) }
-    private val signUpService by lazy { ServicePool.signUpService }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

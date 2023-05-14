@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import org.android.go.sopt.data.remote.ServicePool
+import org.android.go.sopt.data.remote.ServicePool.kakaoSearchService
 import org.android.go.sopt.data.remote.model.ResponseKakaoSearchDto
 import org.android.go.sopt.databinding.FragmentSearchBinding
 import org.android.go.sopt.presentation.search.adapter.KakaoSearchResultAdapter
@@ -24,7 +24,6 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
         get() = requireNotNull(_binding) { "binding is null ...." }
-    private val kakaoSearchService by lazy { ServicePool.kakaoSearchService }
     private val adapter by lazy { KakaoSearchResultAdapter() }
     private var debounceTimer: Timer? = null
 
@@ -66,9 +65,7 @@ class SearchFragment : Fragment() {
         debounceTimer = Timer()
         debounceTimer?.schedule(object : TimerTask() {
             override fun run() {
-                if (query != null) {
-                    getKakaoSearchResult(query)
-                }
+                getKakaoSearchResult(query)
             }
         }, DEBOUNCE_DELAY)
     }

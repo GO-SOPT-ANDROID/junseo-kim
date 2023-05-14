@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.R
-import org.android.go.sopt.data.remote.ServicePool
+import org.android.go.sopt.data.remote.ServicePool.signInService
 import org.android.go.sopt.data.remote.model.RequestSignInDto
 import org.android.go.sopt.data.remote.model.ResponseSignInDto
 import org.android.go.sopt.data.remote.model.ResponseSignInDto.UserInfo
@@ -27,8 +27,6 @@ import retrofit2.Response
 class SignInActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
-    private val signInService by lazy { ServicePool.signInService }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
