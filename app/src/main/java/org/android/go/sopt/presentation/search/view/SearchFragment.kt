@@ -6,6 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.android.go.sopt.data.remote.ServicePool.kakaoSearchService
 import org.android.go.sopt.data.remote.model.ResponseKakaoSearchDto
 import org.android.go.sopt.databinding.FragmentSearchBinding
@@ -16,16 +20,14 @@ import org.android.go.sopt.util.extensions.makeToastMessage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Timer
-import java.util.TimerTask
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
         get() = requireNotNull(_binding) { "binding is null ...." }
-    private var adapter: KakaoSearchResultAdapter? = null
-    private var debounceTimer: Timer? = null
+    private val adapter by lazy { KakaoSearchResultAdapter() }
+    private var debounceJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,14 +62,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun debounceSearch(query: String) {
-        debounceTimer?.cancel()
-
-        debounceTimer = Timer()
-        debounceTimer?.schedule(object : TimerTask() {
-            override fun run() {
-                getKakaoSearchResult(query)
-            }
-        }, DEBOUNCE_DELAY)
+        debounceJob?.cancel()
+        debounceJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(DEBOUNCE_DELAY)
+            getKakaoSearchResult(query)
+        }
     }
 
     private fun initAdapter() {
@@ -82,9 +81,9 @@ class SearchFragment : Fragment() {
                     response: Response<ResponseKakaoSearchDto>,
                 ) {
                     if (response.isSuccessful) {
-                        adapter?.submitList(
+                        adapter.submitList(
                             response.body()?.documents
-                                ?: listOf<ResponseKakaoSearchDto.Document>()
+                                ?: emptyList()
                         )
                     } else {
                         makeToastMessage(UNEXPECTED_ERROR)
@@ -101,7 +100,6 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
-        adapter = null
         super.onDestroyView()
     }
 
