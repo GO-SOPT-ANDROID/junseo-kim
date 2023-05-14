@@ -51,21 +51,26 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                debounceTimer?.cancel()
-
-                debounceTimer = Timer()
-                debounceTimer?.schedule(object : TimerTask() {
-                    override fun run() {
-                        if (query != null) {
-                            getKakaoSearchResult(query)
-                        }
-                    }
-                }, DEBOUNCE_DELAY)
-
+                if (query != null) {
+                    debounceSearch(query)
+                }
                 return true
             }
 
         })
+    }
+
+    private fun debounceSearch(query: String) {
+        debounceTimer?.cancel()
+
+        debounceTimer = Timer()
+        debounceTimer?.schedule(object : TimerTask() {
+            override fun run() {
+                if (query != null) {
+                    getKakaoSearchResult(query)
+                }
+            }
+        }, DEBOUNCE_DELAY)
     }
 
     private fun initAdapter() {
