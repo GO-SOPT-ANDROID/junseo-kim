@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
+import androidx.recyclerview.widget.RecyclerView
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.FragmentGalleryBinding
 import org.android.go.sopt.presentation.gallery.adapter.GoAndroidAdapter
@@ -36,6 +37,22 @@ class GalleryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        initFabShrinkOrExtendEvent()
+    }
+
+    private fun initFabShrinkOrExtendEvent() {
+        binding.rvGallery.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                with(binding.extendFabGallery) {
+                    if (dy > 0) {
+                        shrink()
+                    } else if (dy < 0) {
+                        extend()
+                    }
+                }
+            }
+        })
     }
 
     private fun initRecyclerView() {
