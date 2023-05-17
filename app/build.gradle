@@ -4,6 +4,9 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.0'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
 android {
     namespace 'org.android.go.sopt'
     compileSdk 33
@@ -16,6 +19,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "AUTH_BASE_URL", properties["auth.base.url"]
+        buildConfigField "String", "REQRES_BASE_URL", properties["reqres.base.url"]
+        buildConfigField "String", "KAKAO_BASE_URL", properties["kakao.base.url"]
+        buildConfigField "String", "KAKAO_REST_API_KEY", properties["kakao.rest.api.key"]
     }
 
     buildTypes {
@@ -59,8 +66,9 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
     // define a BOM and its version
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
-
     // define any required OkHttp artifacts without version (BOM을 위에 명시했으니, 밑의 버전들은 BOM에 맞게 적용됩니다.)
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+    // coil : An image loading library for Android backed by Kotlin Coroutines.
+    implementation("io.coil-kt:coil:2.3.0")
 }

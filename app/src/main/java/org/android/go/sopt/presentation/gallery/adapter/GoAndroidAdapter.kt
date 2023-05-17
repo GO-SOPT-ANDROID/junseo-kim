@@ -4,16 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.android.go.sopt.R
 import org.android.go.sopt.data.local.model.PartMember
 import org.android.go.sopt.databinding.ItemGoAndroidBinding
 import org.android.go.sopt.databinding.ItemGoAndroidHeaderBinding
+import org.android.go.sopt.util.DiffUtil
 import org.android.go.sopt.util.extensions.makeToastMessage
 
-class GoAndroidAdapter : ListAdapter<PartMember, RecyclerView.ViewHolder>(diffUtil) {
+class GoAndroidAdapter :
+    ListAdapter<PartMember, RecyclerView.ViewHolder>(DiffUtil<PartMember> { oldItem, newItem ->
+        oldItem == newItem
+    }) {
     private lateinit var tracker: SelectionTracker<Long>
 
     init {
@@ -33,9 +36,7 @@ class GoAndroidAdapter : ListAdapter<PartMember, RecyclerView.ViewHolder>(diffUt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == HEADER) {
             val binding = ItemGoAndroidHeaderBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             )
             HeaderViewHolder(binding)
         } else {
@@ -106,16 +107,6 @@ class GoAndroidAdapter : ListAdapter<PartMember, RecyclerView.ViewHolder>(diffUt
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<PartMember>() {
-
-            override fun areItemsTheSame(oldItem: PartMember, newItem: PartMember): Boolean =
-                oldItem === newItem
-
-            override fun areContentsTheSame(oldItem: PartMember, newItem: PartMember): Boolean =
-                oldItem == newItem
-
-        }
-
         const val HEADER = 0
         const val CONTENT = 1
     }

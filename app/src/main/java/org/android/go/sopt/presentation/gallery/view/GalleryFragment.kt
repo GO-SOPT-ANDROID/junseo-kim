@@ -21,6 +21,7 @@ class GalleryFragment : Fragment() {
     private val binding: FragmentGalleryBinding
         get() = requireNotNull(_binding) { "binding is null ...." }
     private val viewModel by viewModels<GalleryViewModel>()
+    private var adapter: GoAndroidAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,11 +39,11 @@ class GalleryFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        val adapter = GoAndroidAdapter()
+        adapter = GoAndroidAdapter()
         binding.rvGallery.adapter = adapter
-        adapter.submitList(viewModel.getPartMemberList())
+        adapter?.submitList(viewModel.getPartMemberList())
         val tracker = buildTracker()
-        adapter.setSelectionTracker(tracker)
+        adapter?.setSelectionTracker(tracker)
     }
 
     private fun buildTracker(): SelectionTracker<Long> = SelectionTracker.Builder(
@@ -59,6 +60,7 @@ class GalleryFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
+        adapter = null
         super.onDestroyView()
     }
 }

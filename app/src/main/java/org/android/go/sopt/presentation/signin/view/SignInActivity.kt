@@ -4,102 +4,114 @@ import SharedPreferences
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.R
-import org.android.go.sopt.data.local.model.UserInfo
+import org.android.go.sopt.data.remote.ServicePool.signInService
+import org.android.go.sopt.data.remote.model.RequestSignInDto
+import org.android.go.sopt.data.remote.model.ResponseSignInDto
+import org.android.go.sopt.data.remote.model.ResponseSignInDto.UserInfo
 import org.android.go.sopt.databinding.ActivitySignInBinding
 import org.android.go.sopt.presentation.main.view.MainActivity
-import org.android.go.sopt.presentation.signin.viewmodel.SignInViewModel
 import org.android.go.sopt.presentation.signup.SignUpActivity
-import org.android.go.sopt.util.PublicString.USER_ID
+import org.android.go.sopt.util.PublicString.CONNECTION_FAIL
+import org.android.go.sopt.util.PublicString.SERVER_COMMUNICATION_SUCCESS
+import org.android.go.sopt.util.PublicString.UNEXPECTED_ERROR
 import org.android.go.sopt.util.PublicString.USER_NAME
-import org.android.go.sopt.util.PublicString.USER_PW
 import org.android.go.sopt.util.PublicString.USER_SKILL
 import org.android.go.sopt.util.extensions.hideKeyboard
 import org.android.go.sopt.util.extensions.makeToastMessage
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignInActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
-    private val viewModel by viewModels<SignInViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setSignUpBtnClickListener()
-        setSignIpBtnClickListener()
+        setSignUpBtnClickEvent()
+        setSignInBtnClickEvent()
         navigateToMainPageForSignedInUser()
 
         setContentView(binding.root)
     }
 
     private fun navigateToMainPageForSignedInUser() {
-        if (SharedPreferences.getBoolean(getString(R.string.is_user_sign_in))) navigateToMainPageByAutoSignIn()
+        if (SharedPreferences.getBoolean(getString(R.string.is_user_sign_in))) {
+            startActivity(
+                Intent(this, MainActivity::class.java).putExtra(
+                    USER_NAME, SharedPreferences.getString(
+                        USER_NAME
+                    )
+                ).putExtra(USER_SKILL, SharedPreferences.getString(USER_SKILL))
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        }
     }
 
-    private fun navigateToMainPageByAutoSignIn() {
-        startActivity(
-            Intent(this, MainActivity::class.java).putExtra(
-                USER_NAME, SharedPreferences.getString(
-                    USER_NAME
-                )
-            ).putExtra(USER_SKILL, SharedPreferences.getString(USER_SKILL))
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        )
-    }
-
-    private fun setSignIpBtnClickListener() {
+    private fun setSignInBtnClickEvent() {
         binding.btnSignIn.setOnClickListener {
-            if (!viewModel.isUserInfoCreated()) {
-                makeToastMessage(getString(R.string.please_register_as_a_member_first))
-                return@setOnClickListener
-            }
+            with(binding) {
+                signInService.signIn(
+                    RequestSignInDto(
+                        etSignInId.text.toString(),
+                        etSignInPw.text.toString()
+                    )
+                ).enqueue(
+                    object : Callback<ResponseSignInDto> {
+                        override fun onResponse(
+                            call: Call<ResponseSignInDto>,
+                            response: Response<ResponseSignInDto>,
+                        ) {
+                            if (response.isSuccessful) {
+                                startActivity(
+                                    Intent(
+                                        this@SignInActivity,
+                                        MainActivity::class.java
+                                    )
+                                )
+                                setAutoSignIn()
+                                response.body()?.data?.let { userInfo ->
+                                    saveUserInfo(
+                                        userInfo
+                                    )
+                                }
+                                makeToastMessage(
+                                    response.body()?.message
+                                        ?: SERVER_COMMUNICATION_SUCCESS
+                                )
+                            } else {
+                                makeToastMessage(response.body()?.message ?: UNEXPECTED_ERROR)
+                            }
+                        }
 
-            if (viewModel.isUserInfoCorrect(
-                    binding.etSignInId.text.toString(), binding.etSignInPw.text.toString()
+                        override fun onFailure(call: Call<ResponseSignInDto>, t: Throwable) {
+                            makeToastMessage(CONNECTION_FAIL)
+                        }
+
+                    }
                 )
-            ) {
-                makeToastMessage(getString(R.string.login_was_successful))
-                navigateToMainPage()
-                setAutoSignIn()
-            } else makeToastMessage(getString(R.string.please_check_your_id_or_password))
-
+            }
         }
     }
 
     private fun setAutoSignIn() {
+        SharedPreferences.setBoolean(getString(R.string.is_user_sign_in), true)
+    }
+
+    private fun saveUserInfo(userInfo: UserInfo) {
         SharedPreferences.run {
-            setBoolean(getString(R.string.is_user_sign_in), true)
-            setString(USER_NAME, viewModel.getUserName())
-            setString(USER_SKILL, viewModel.getUserSkill())
+            setString(USER_NAME, userInfo.name)
+            setString(USER_SKILL, userInfo.skill)
         }
     }
 
-    private fun navigateToMainPage() {
-        startActivity(
-            Intent(this, MainActivity::class.java).putExtra(USER_NAME, viewModel.getUserName())
-                .putExtra(USER_SKILL, viewModel.getUserSkill())
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        )
-    }
-
-    private fun setSignUpBtnClickListener() {
+    private fun setSignUpBtnClickEvent() {
         binding.btnSignUp.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
-        }
-    }
-
-    private fun saveUserInfo(info: Intent?) {
-        info?.run {
-            viewModel.getUserInfo(
-                UserInfo(
-                    userId = getStringExtra(USER_ID),
-                    userPw = getStringExtra(USER_PW),
-                    userName = getStringExtra(USER_NAME),
-                    userSkill = getStringExtra(USER_SKILL)
-                )
-            )
         }
     }
 

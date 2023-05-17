@@ -7,10 +7,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.R
 import org.android.go.sopt.data.remote.ServicePool
+import org.android.go.sopt.data.remote.ServicePool.signUpService
 import org.android.go.sopt.data.remote.model.RequestSignUpDto
 import org.android.go.sopt.data.remote.model.ResponseSignUpDto
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.presentation.signin.view.SignInActivity
+import org.android.go.sopt.util.PublicString.CONNECTION_FAIL
+import org.android.go.sopt.util.PublicString.SERVER_COMMUNICATION_SUCCESS
+import org.android.go.sopt.util.PublicString.UNEXPECTED_ERROR
 import org.android.go.sopt.util.PublicString.USER_ID
 import org.android.go.sopt.util.PublicString.USER_NAME
 import org.android.go.sopt.util.PublicString.USER_PW
@@ -23,7 +27,6 @@ import retrofit2.Response
 class SignUpActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignUpBinding.inflate(layoutInflater) }
-    private val signUpService by lazy { ServicePool.signUpService }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -56,18 +59,14 @@ class SignUpActivity : AppCompatActivity() {
                                         SignInActivity::class.java
                                     )
                                 )
-                                Toast.makeText(
-                                    this@SignUpActivity,
-                                    response.body()?.message ?: "회원가입에 성공하였습니다.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                makeToastMessage(
+                                    response.body()?.message ?: SERVER_COMMUNICATION_SUCCESS
+                                )
                             } else {
                                 // 서버통신 실패(40X)
-                                Toast.makeText(
-                                    this@SignUpActivity,
-                                    response.body()?.message ?: "예기치 않은 오류가 발생했습니다.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                makeToastMessage(
+                                    response.body()?.message ?: UNEXPECTED_ERROR
+                                )
                             }
                         }
 
@@ -75,7 +74,7 @@ class SignUpActivity : AppCompatActivity() {
                             // 응답이 안 왔다.
                             Toast.makeText(
                                 this@SignUpActivity,
-                                "서버통신 실패 (응답값X)",
+                                CONNECTION_FAIL,
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
