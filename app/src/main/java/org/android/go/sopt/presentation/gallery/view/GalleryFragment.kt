@@ -10,6 +10,7 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.RecyclerView
 import org.android.go.sopt.R
+import org.android.go.sopt.data.local.model.PartMember
 import org.android.go.sopt.databinding.FragmentGalleryBinding
 import org.android.go.sopt.presentation.gallery.adapter.GoAndroidAdapter
 import org.android.go.sopt.presentation.gallery.adapter.selection.GoAndroidItemDetailsLookup
@@ -38,6 +39,25 @@ class GalleryFragment : Fragment() {
 
         initRecyclerView()
         initFabShrinkOrExtendEvent()
+        initFabClickEvent()
+    }
+
+    private fun initFabClickEvent() {
+        binding.extendFabGallery.setOnClickListener {
+            val tracker = adapter?.getSelectionTracker()
+            val itemList: MutableList<PartMember>? =
+                adapter?.currentList?.toMutableList()
+            val selectedItemPositionList =
+                tracker?.selection?.sortedDescending()
+            if (selectedItemPositionList != null) {
+                for (selectedItemPosition in selectedItemPositionList) {
+                    itemList?.removeAt(selectedItemPosition.toInt())
+                }
+            }
+            adapter?.submitList(itemList)
+            tracker?.clearSelection()
+
+        }
     }
 
     private fun initFabShrinkOrExtendEvent() {

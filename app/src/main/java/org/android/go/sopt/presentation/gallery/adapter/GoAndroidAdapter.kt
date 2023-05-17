@@ -106,6 +106,8 @@ class GoAndroidAdapter :
         this.tracker = tracker
     }
 
+    fun getSelectionTracker(): SelectionTracker<Long> = tracker
+
     companion object {
         const val HEADER = 0
         const val CONTENT = 1
