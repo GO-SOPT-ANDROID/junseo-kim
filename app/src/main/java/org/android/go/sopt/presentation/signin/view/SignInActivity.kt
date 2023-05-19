@@ -54,47 +54,45 @@ class SignInActivity : AppCompatActivity() {
 
     private fun setSignInBtnClickEvent() {
         binding.btnSignIn.setOnClickListener {
-            with(binding) {
-                signInService.signIn(
-                    RequestSignInDto(
-                        etSignInId.text.toString(),
-                        etSignInPw.text.toString()
-                    )
-                ).enqueue(
-                    object : Callback<ResponseSignInDto> {
-                        override fun onResponse(
-                            call: Call<ResponseSignInDto>,
-                            response: Response<ResponseSignInDto>,
-                        ) {
-                            if (response.isSuccessful) {
-                                startActivity(
-                                    Intent(
-                                        this@SignInActivity,
-                                        MainActivity::class.java
-                                    )
-                                )
-                                setAutoSignIn()
-                                response.body()?.data?.let { userInfo ->
-                                    saveUserInfo(
-                                        userInfo
-                                    )
-                                }
-                                makeToastMessage(
-                                    response.body()?.message
-                                        ?: SERVER_COMMUNICATION_SUCCESS
-                                )
-                            } else {
-                                makeToastMessage(response.body()?.message ?: UNEXPECTED_ERROR)
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ResponseSignInDto>, t: Throwable) {
-                            makeToastMessage(CONNECTION_FAIL)
-                        }
-
-                    }
+            signInService.signIn(
+                RequestSignInDto(
+                    binding.etSignInId.text.toString(),
+                    binding.etSignInPw.text.toString()
                 )
-            }
+            ).enqueue(
+                object : Callback<ResponseSignInDto> {
+                    override fun onResponse(
+                        call: Call<ResponseSignInDto>,
+                        response: Response<ResponseSignInDto>,
+                    ) {
+                        if (response.isSuccessful) {
+                            startActivity(
+                                Intent(
+                                    this@SignInActivity,
+                                    MainActivity::class.java
+                                )
+                            )
+                            setAutoSignIn()
+                            response.body()?.data?.let { userInfo ->
+                                saveUserInfo(
+                                    userInfo
+                                )
+                            }
+                            makeToastMessage(
+                                response.body()?.message
+                                    ?: SERVER_COMMUNICATION_SUCCESS
+                            )
+                        } else {
+                            makeToastMessage(response.body()?.message ?: UNEXPECTED_ERROR)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseSignInDto>, t: Throwable) {
+                        makeToastMessage(CONNECTION_FAIL)
+                    }
+
+                }
+            )
         }
     }
 
