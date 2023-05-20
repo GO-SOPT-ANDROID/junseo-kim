@@ -4,29 +4,23 @@ import SharedPreferences
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import org.android.go.sopt.R
-import org.android.go.sopt.data.remote.ServicePool.signInService
-import org.android.go.sopt.data.remote.model.RequestSignInDto
-import org.android.go.sopt.data.remote.model.ResponseSignInDto
 import org.android.go.sopt.data.remote.model.ResponseSignInDto.UserInfo
 import org.android.go.sopt.databinding.ActivitySignInBinding
 import org.android.go.sopt.presentation.main.view.MainActivity
-import org.android.go.sopt.presentation.signup.SignUpActivity
-import org.android.go.sopt.util.PublicString.CONNECTION_FAIL
-import org.android.go.sopt.util.PublicString.SERVER_COMMUNICATION_SUCCESS
-import org.android.go.sopt.util.PublicString.UNEXPECTED_ERROR
+import org.android.go.sopt.presentation.signin.viewmodel.SignInViewModel
+import org.android.go.sopt.presentation.signup.view.SignUpActivity
 import org.android.go.sopt.util.PublicString.USER_NAME
 import org.android.go.sopt.util.PublicString.USER_SKILL
 import org.android.go.sopt.util.extensions.hideKeyboard
 import org.android.go.sopt.util.extensions.makeToastMessage
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SignInActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
+    private val viewModel by viewModels<SignInViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +29,43 @@ class SignInActivity : AppCompatActivity() {
         setSignInBtnClickEvent()
         navigateToMainPageForSignedInUser()
 
+        observeSignInResult()
+        observeErrorResult()
+
         setContentView(binding.root)
+    }
+
+    private fun observeErrorResult() {
+        viewModel.errorResult.observe(this) { errorMessage ->
+            makeToastMessage(errorMessage)
+        }
+    }
+
+    private fun observeSignInResult() {
+        viewModel.signInResult.observe(this) { signInResult ->
+            startActivity(
+                Intent(
+                    this@SignInActivity,
+                    MainActivity::class.java
+                )
+            )
+            setAutoSignIn()
+            saveUserInfo(
+                signInResult.data
+            )
+            makeToastMessage(
+                signInResult.message
+            )
+        }
+    }
+
+    private fun setSignInBtnClickEvent() {
+        binding.btnSignIn.setOnClickListener {
+            viewModel.signIn(
+                binding.etSignInId.text.toString(),
+                binding.etSignInPw.text.toString()
+            )
+        }
     }
 
     private fun navigateToMainPageForSignedInUser() {
@@ -48,50 +78,6 @@ class SignInActivity : AppCompatActivity() {
                 ).putExtra(USER_SKILL, SharedPreferences.getString(USER_SKILL))
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
-        }
-    }
-
-    private fun setSignInBtnClickEvent() {
-        binding.btnSignIn.setOnClickListener {
-            signInService.signIn(
-                RequestSignInDto(
-                    binding.etSignInId.text.toString(),
-                    binding.etSignInPw.text.toString()
-                )
-            ).enqueue(
-                object : Callback<ResponseSignInDto> {
-                    override fun onResponse(
-                        call: Call<ResponseSignInDto>,
-                        response: Response<ResponseSignInDto>,
-                    ) {
-                        if (response.isSuccessful) {
-                            startActivity(
-                                Intent(
-                                    this@SignInActivity,
-                                    MainActivity::class.java
-                                )
-                            )
-                            setAutoSignIn()
-                            response.body()?.data?.let { userInfo ->
-                                saveUserInfo(
-                                    userInfo
-                                )
-                            }
-                            makeToastMessage(
-                                response.body()?.message
-                                    ?: SERVER_COMMUNICATION_SUCCESS
-                            )
-                        } else {
-                            makeToastMessage(response.body()?.message ?: UNEXPECTED_ERROR)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ResponseSignInDto>, t: Throwable) {
-                        makeToastMessage(CONNECTION_FAIL)
-                    }
-
-                }
             )
         }
     }

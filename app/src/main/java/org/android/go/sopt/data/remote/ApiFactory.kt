@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.android.go.sopt.BuildConfig
+import org.android.go.sopt.data.remote.interceptor.AuthInterceptor
 import org.android.go.sopt.data.remote.services.KakaoSearchService
 import org.android.go.sopt.data.remote.services.ReqresService
 import org.android.go.sopt.data.remote.services.SignInService
@@ -15,8 +16,9 @@ import retrofit2.Retrofit
 object ApiFactory {
     private val client by lazy {
         OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }).build()
+            level =
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        }).addInterceptor(AuthInterceptor()).build()
     }
 
     val retrofitForAuth: Retrofit by lazy {
