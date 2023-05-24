@@ -31,4 +31,6 @@
     <string name="selected_member">Selected member</string>
     <string name="hello_go_android">Hello Go android!</string>
     <string name="delete">Delete</string>
+    <string name="invalid_id_message">조건 : 영문, 숫자가 포함된 6~10글자</string>
+    <string name="invalid_pw_message">조건 : 영문, 숫자, 특수문자가 포함된 6~12글자</string>
 </resources>

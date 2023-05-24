@@ -13,4 +13,11 @@ object PublicString {
     //REGEX
     const val REGEX_ID = "^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{6,10}\$"
     const val REGEX_PW = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%^&*])[a-zA-Z0-9!@#\$%^&*]{6,12}\$"
+
+    //Throw Error Messages
+    const val ID_IS_NULL = "id is null"
+    const val PW_IS_NULL = "pw is null"
+    const val NAME_IS_NULL = "name is null"
+    const val SKILL_IS_NULL = "skill is null"
+
 }
