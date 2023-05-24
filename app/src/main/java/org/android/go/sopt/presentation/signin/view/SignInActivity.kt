@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import org.android.go.sopt.R
 import org.android.go.sopt.data.remote.model.ResponseSignInDto.UserInfo
 import org.android.go.sopt.databinding.ActivitySignInBinding
@@ -19,20 +20,29 @@ import org.android.go.sopt.util.extensions.makeToastMessage
 
 class SignInActivity : AppCompatActivity() {
 
-    private val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
+    lateinit var binding: ActivitySignInBinding
     private val viewModel by viewModels<SignInViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initDataBinding()
+
         setSignUpBtnClickEvent()
-        setSignInBtnClickEvent()
         navigateToMainPageForSignedInUser()
 
         observeSignInResult()
-        observeErrorResult()
+    }
 
-        setContentView(binding.root)
+    private fun observeSignInResult() {
+        observeSuccessResult()
+        observeErrorResult()
+    }
+
+    private fun initDataBinding() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
+        binding.lifecycleOwner = this
+        binding.vm = viewModel
     }
 
     private fun observeErrorResult() {
@@ -41,7 +51,7 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeSignInResult() {
+    private fun observeSuccessResult() {
         viewModel.signInResult.observe(this) { signInResult ->
             startActivity(
                 Intent(
@@ -59,25 +69,18 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSignInBtnClickEvent() {
-        binding.btnSignIn.setOnClickListener {
-            viewModel.signIn(
-                binding.etSignInId.text.toString(),
-                binding.etSignInPw.text.toString()
-            )
-        }
-    }
-
     private fun navigateToMainPageForSignedInUser() {
         if (SharedPreferences.getBoolean(getString(R.string.is_user_sign_in))) {
             startActivity(
-                Intent(this, MainActivity::class.java).putExtra(
-                    USER_NAME, SharedPreferences.getString(
-                        USER_NAME
+                Intent(this, MainActivity::class.java).apply {
+                    putExtra(
+                        USER_NAME, SharedPreferences.getString(
+                            USER_NAME
+                        )
                     )
-                ).putExtra(USER_SKILL, SharedPreferences.getString(USER_SKILL))
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    putExtra(USER_SKILL, SharedPreferences.getString(USER_SKILL))
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             )
         }
     }
