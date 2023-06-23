@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.android.go.sopt.BuildConfig
 import org.android.go.sopt.data.remote.interceptor.AuthInterceptor
+import org.android.go.sopt.data.remote.services.ImageService
 import org.android.go.sopt.data.remote.services.KakaoSearchService
 import org.android.go.sopt.data.remote.services.ReqresService
 import org.android.go.sopt.data.remote.services.SignInService
@@ -45,6 +46,15 @@ object ApiFactory {
     }
 
     inline fun <reified T> createKakaoService(): T = retrofitForKakao.create<T>(T::class.java)
+
+    val retrofitForImage: Retrofit by lazy {
+        Retrofit.Builder().baseUrl(BuildConfig.IMAGE_BASE_URL)
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .client(client)
+            .build()
+    }
+
+    inline fun <reified T> createImageService(): T = retrofitForImage.create<T>(T::class.java)
 }
 
 object ServicePool {
@@ -52,4 +62,5 @@ object ServicePool {
     val signInService = ApiFactory.createAuthService<SignInService>()
     val reqresService = ApiFactory.createReqresService<ReqresService>()
     val kakaoSearchService = ApiFactory.createKakaoService<KakaoSearchService>()
+    val imageService = ApiFactory.createImageService<ImageService>()
 }

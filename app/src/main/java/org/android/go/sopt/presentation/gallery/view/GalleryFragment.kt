@@ -4,18 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.selection.StorageStrategy
-import androidx.recyclerview.widget.RecyclerView
-import org.android.go.sopt.R
-import org.android.go.sopt.data.local.model.PartMember
+import coil.load
 import org.android.go.sopt.databinding.FragmentGalleryBinding
 import org.android.go.sopt.presentation.gallery.adapter.GoAndroidAdapter
-import org.android.go.sopt.presentation.gallery.adapter.selection.GoAndroidItemDetailsLookup
-import org.android.go.sopt.presentation.gallery.adapter.selection.SelectionItemKeyProvider
 import org.android.go.sopt.presentation.gallery.viewmodel.GalleryViewModel
+import org.android.go.sopt.util.ContentUriRequestBody
 
 class GalleryFragment : Fragment() {
 
@@ -24,6 +22,47 @@ class GalleryFragment : Fragment() {
         get() = requireNotNull(_binding) { "binding is null ...." }
     private val viewModel by viewModels<GalleryViewModel>()
     private var adapter: GoAndroidAdapter? = null
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(maxItems = 3)) { uris ->
+            with(binding) {
+                when (uris.size) {
+                    0 -> {
+                        Toast.makeText(requireContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    1 -> {
+                        viewModel.setRequestBody(ContentUriRequestBody(requireContext(), uris[0]))
+                        ivGalleryFirst.load(uris[0])
+                        viewModel.uploadImage()
+                    }
+
+                    2 -> {
+                        ivGalleryFirst.load(uris[0])
+                        ivGallerySecond.load(uris[1])
+                    }
+
+                    3 -> {
+                        ivGalleryFirst.load(uris[0])
+                        ivGallerySecond.load(uris[1])
+                        ivGalleryThird.load(uris[2])
+                    }
+
+                    else -> {
+                        Toast.makeText(requireContext(), "3개까지의 이미지만 선택해주세요.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+        }
+    private val locatePermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                Toast.makeText(requireContext(), "허락받음", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "허락못받음", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,68 +75,15 @@ class GalleryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initRecyclerView()
-        initFabShrinkOrExtendEvent()
-        initFabClickEvent()
-    }
-
-    private fun initFabClickEvent() {
-        binding.extendFabGallery.setOnClickListener {
-            val tracker = adapter?.getSelectionTracker()
-            val itemList: MutableList<PartMember>? =
-                adapter?.currentList?.toMutableList()
-            val selectedItemPositionList =
-                tracker?.selection?.sortedDescending()
-            if (selectedItemPositionList != null) {
-                for (selectedItemPosition in selectedItemPositionList) {
-                    itemList?.removeAt(selectedItemPosition.toInt())
-                }
-            }
-            adapter?.submitList(itemList)
-            tracker?.clearSelection()
-
+        locatePermissionLauncher.launch("android.permission.ACCESS_FINE_LOCATION")
+        binding.btnGalleryPickImage.setOnClickListener {
+            launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
         }
     }
 
-    private fun initFabShrinkOrExtendEvent() {
-        binding.rvGallery.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                with(binding.extendFabGallery) {
-                    if (dy > 0) {
-                        shrink()
-                    } else if (dy < 0) {
-                        extend()
-                    }
-                }
-            }
-        })
-    }
-
-    private fun initRecyclerView() {
-        adapter = GoAndroidAdapter()
-        binding.rvGallery.adapter = adapter
-        adapter?.submitList(viewModel.getPartMemberList())
-        val tracker = buildTracker()
-        adapter?.setSelectionTracker(tracker)
-    }
-
-    private fun buildTracker(): SelectionTracker<Long> = SelectionTracker.Builder(
-        getString(R.string.selected_member),
-        binding.rvGallery,
-        SelectionItemKeyProvider(binding.rvGallery),
-        GoAndroidItemDetailsLookup(binding.rvGallery),
-        StorageStrategy.createLongStorage(),
-    ).build()
-
-    fun smoothScrollToTop() {
-        binding.rvGallery.smoothScrollToPosition(0)
-    }
 
     override fun onDestroyView() {
         _binding = null
-        adapter = null
         super.onDestroyView()
     }
 }

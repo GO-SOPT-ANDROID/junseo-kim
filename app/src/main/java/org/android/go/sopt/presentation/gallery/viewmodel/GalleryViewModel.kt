@@ -1,46 +1,42 @@
 package org.android.go.sopt.presentation.gallery.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.android.go.sopt.R
-import org.android.go.sopt.data.local.model.PartMember
+import org.android.go.sopt.data.remote.ServicePool.imageService
+import org.android.go.sopt.util.ContentUriRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class GalleryViewModel : ViewModel() {
-    private val partMemberList: List<PartMember> = listOf(
-        PartMember(R.drawable.img_android, "Hello Go Android !"),
-        PartMember(
-            R.drawable.img_junseo, "김준서"
-        ),
-        PartMember(R.drawable.img_daehwan, "계대환"),
-        PartMember(R.drawable.img_eujin, "곽의진"),
-        PartMember(R.drawable.img_minjeong, "김민정"),
-        PartMember(R.drawable.img_sangho, "김상호"),
-        PartMember(R.drawable.img_seonhwan, "김선환"),
-        PartMember(R.drawable.img_subin, "김수빈"),
-        PartMember(R.drawable.img_jiyoung, "김지영"),
-        PartMember(R.drawable.img_hajeong, "김하정"),
-        PartMember(R.drawable.img_minju, "박민주"),
-        PartMember(R.drawable.img_sohyun, "박소현"),
-        PartMember(R.drawable.img_sumin, "배수민"),
-        PartMember(R.drawable.img_jihyeon_bae, "배지현"),
-        PartMember(R.drawable.img_hyeseon, "백혜선"),
-        PartMember(R.drawable.img_jaewon, "서재원"),
-        PartMember(R.drawable.img_seohyun, "신서현"),
-        PartMember(R.drawable.img_jihyeon_ahn, "안지현"),
-        PartMember(R.drawable.img_sangwook, "우상욱"),
-        PartMember(R.drawable.img_jooyoung, "윤주영"),
-        PartMember(R.drawable.img_gaeun, "이가은"),
-        PartMember(R.drawable.img_nayeong, "이나영"),
-        PartMember(R.drawable.img_daeun, "이다은"),
-        PartMember(R.drawable.img_sak, "이삭"),
-        PartMember(R.drawable.img_somin, "이소민"),
-        PartMember(R.drawable.img_soohyeon, "이수현"),
-        PartMember(R.drawable.img_junhee, "이준희"),
-        PartMember(R.drawable.img_taehee, "이태희"),
-        PartMember(R.drawable.img_haeun, "이하은"),
-        PartMember(R.drawable.img_chaeyeon, "전채연"),
-        PartMember(R.drawable.img_seona, "함선아"),
-        PartMember(R.drawable.img_yeonjin, "황연진"),
-    )
+    private val _image = MutableLiveData<ContentUriRequestBody>()
+    private val image: LiveData<ContentUriRequestBody>
+        get() = _image
 
-    fun getPartMemberList(): List<PartMember> = partMemberList
+    fun setRequestBody(requestBody: ContentUriRequestBody) {
+        _image.value = requestBody
+    }
+
+    fun uploadImage() {
+        if (image.value != null) {
+            imageService.uploadImage(image.value!!.toFormData())
+                .enqueue(object : Callback<Unit> {
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                        if (response.isSuccessful) {
+                            Log.e("sopt", "image upload success")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+        } else {
+
+        }
+
+    }
 }

@@ -25,9 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigationReselectListener() {
         binding.bnvMain.setOnItemReselectedListener {
-            val currentFragment = supportFragmentManager.fragments.last()
-            if (it.itemId == R.id.menu_home || currentFragment is GalleryFragment)
-                (currentFragment as GalleryFragment).smoothScrollToTop()
+
         }
     }
 

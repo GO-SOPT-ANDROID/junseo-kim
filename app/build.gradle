@@ -23,6 +23,7 @@ android {
         buildConfigField "String", "REQRES_BASE_URL", properties["reqres.base.url"]
         buildConfigField "String", "KAKAO_BASE_URL", properties["kakao.base.url"]
         buildConfigField "String", "KAKAO_REST_API_KEY", properties["kakao.rest.api.key"]
+        buildConfigField "String", "IMAGE_BASE_URL", properties["image.base.url"]
     }
 
     buildTypes {
